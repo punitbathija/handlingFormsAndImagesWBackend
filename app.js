@@ -29,11 +29,34 @@ app.get("/myget", (req, res) => {
 });
 
 app.post("/mypost", async (req, res) => {
-  let file = req.files.file;
+  let result;
+  let imageArray = [];
 
-  result = await cloudinary.uploader.upload(file.tempFilePath, {
-    folder: "users",
-  });
+  // ## Multiple Image
+
+  if (req.files) {
+    for (let i = 0; i < req.files.file.length; i++) {
+      let result = await cloudinary.uploader.upload(
+        req.files.file[i].tempFilePath,
+        {
+          folder: "user",
+        }
+      );
+
+      imageArray.push({
+        public_id: result.public_id,
+        secure_url: result.secure_url,
+      });
+    }
+  }
+
+  //   ### Single Image
+
+  //   let file = req.files.file;
+
+  //   result = await cloudinary.uploader.upload(file.tempFilePath, {
+  //     folder: "users",
+  //   });
 
   console.log(result);
 
@@ -41,9 +64,11 @@ app.post("/mypost", async (req, res) => {
     firstName: req.body.firstname,
     lastName: req.body.lastname,
     result,
+    imageArray,
   };
 
   res.send(details);
+  console.log(details);
 });
 
 app.get("/getForm", (req, res) => {
