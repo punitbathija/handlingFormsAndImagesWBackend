@@ -2,6 +2,10 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const fileUpload = require("express-fileupload");
+const cloudinary = require("cloudinary").v2;
+const { CLOUD_NAME, API_KEY, API_SECRET } = process.env;
+
+//Middlewaare's
 app.use(express.json());
 app.use(express.urlencoded({ extended: "true" }));
 app.use(
@@ -11,6 +15,12 @@ app.use(
   })
 );
 
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
+});
+
 app.set("view engine", "ejs");
 
 app.get("/myget", (req, res) => {
@@ -18,9 +28,22 @@ app.get("/myget", (req, res) => {
   res.send(req.query);
 });
 
-app.post("/mypost", (req, res) => {
-  console.log(req.files);
-  res.send(req.body);
+app.post("/mypost", async (req, res) => {
+  let file = req.files.file;
+
+  result = await cloudinary.uploader.upload(file.tempFilePath, {
+    folder: "users",
+  });
+
+  console.log(result);
+
+  details = {
+    firstName: req.body.firstname,
+    lastName: req.body.lastname,
+    result,
+  };
+
+  res.send(details);
 });
 
 app.get("/getForm", (req, res) => {
