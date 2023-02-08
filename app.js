@@ -6,7 +6,8 @@ app.use(express.urlencoded({ extended: "true" }));
 app.set("view engine", "ejs");
 
 app.get("/myget", (req, res) => {
-  res.send("<h1>Welcome to My App</h1>");
+  console.log(req.body);
+  res.send(req.query);
 });
 
 app.get("/getForm", (req, res) => {

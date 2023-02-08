@@ -10,15 +10,15 @@
 <body class="bg-dark text-white">
     <div class="container mt-4 col-4 col-offset-6">
         <h1 class="display">Get Form</h1>
-        <form class="text-white">
+        <form class="text-white" method="GET" action="/myget">
             <div class="mb-3">
               <label for="firstname" class="form-label">First Name</label>
-              <input type="text" class="form-control" id="firstname" aria-describedby="emailHelp">
+              <input type="text" class="form-control" id="firstname" name="firstname" aria-describedby="firstname">
               <div id="firstname" class="form-text  text-white">We'll never share your name with anyone else.</div>
             </div>
             <div class="mb-3">
               <label for="lastname" class="form-label">Last Name</label>
-              <input type="lastname" class="form-control" id="lastname">
+              <input type="lastname" class="form-control" id="lastname" name="lastname">
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
           </form>
